@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Empleados
+{% endblock  %}
+
+{% block content %}
+<article class="page-content">
+<div class="row">	
+	<div id="update_employee" class="col l6 push-l3  " >
+		<div class="card ">
+		    <div class="card-content  ">
+	      		<span class="card-title"><h5>Modificar empleado</h5></span>
+				<form action="{% url "employees:update_employee" %}" method="post">
+				{% csrf_token %}
+				<div class="input-field col s12 l6">
+					<input type="text" name="name" id="name" class="validate" value="{{employee.code}}" onkeypress="return validateString(event)" maxlength="50" disabled=""></input>
+		          	<label for="name">Código</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="name" id="name" class="validate" value="{{userprofile.name}}" required="true" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="name">Nombre</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="lastname" id="lastname" class="validate" value="{{userprofile.lastname}}" required="true" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="lastname">Apellido</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="position" id="position" class="validate" required="true" value="{{employee.position}}" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="position">Cargo</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="email" name="email" id="email" class="validate" required="true" value="{{userprofile.email}}"></input>
+		          	<label for="email">E-mail</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="celphone" id="celphone" class="validate" required="true" value="{{employee.celphone}}" onkeypress="return validateNum(event)" maxlength="12"></input>
+		          	<label for="celphone">Celular</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="phone" id="phone" class="validate" required="true" value="{{employee.phone}}" onkeypress="return validateNum(event)" maxlength="9"></input>
+		          	<label for="phone">Teléfono</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<select name="documentType" required="true">
+					  <option value="" disabled selected>Tipo de documento</option>
+							{% if userprofile.documentType == "DNI"%}
+							<option value="DNI" selected="">DNI</option>
+							<option value="PAS">Pasaporte</option>
+							{% endif %}	
+							{% if userprofile.documentType == "PAS"%}
+							<option value="DNI" ="">DNI</option>
+							<option value="PAS" selected>Pasaporte</option>
+							{% endif %}	
+					</select>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="nroDocument" id="nroDocument" class="validate" value="{{userprofile.nroDocument}}" required="true" onkeypress="return validateNum(event)" maxlength="8"></input>
+		          	<label for="nroDocument">Número de documento</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<select name="state" required="true">
+					  <option value="" disabled selected>Estado</option>
+							{% if userprofile.is_active %}
+							<option value="1" selected="">Activo</option>
+							<option value="0">Inactivo</option>
+							{% endif %}	
+							{% if not userprofile.is_active %}
+							<option value="1" ="">Activo</option>
+							<option value="0" selected>Inactivo</option>
+							{% endif %}	
+					</select>
+				</div>
+				<div class="row center-align clear-both">
+					<div class="col s12 m6 l6">
+						<a href="{% url "employees:getall" %}" class="btn red waves-effect waves-light">Atrás</a>
+					</div>
+					<div class="col s12 m6 l6">
+						<button type="submit" class="btn waves-effect waves-light btn-signup" >GUARDAR CAMBIOS</button>
+					</div>
+				</div>
+				</form>
+		    </div>
+		</div>
+	</div>	
+</div>	
+</article>
+{% endblock  %}

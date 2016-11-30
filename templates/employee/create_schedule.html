@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Nuevo horario
+{% endblock  %}
+
+{% block content %}
+<article class="page-content">
+<div class="row">	
+	<div id="create_employee" class="col l6 push-l3  " >
+		<div class="card ">
+		    <div class="card-content  ">
+				<form action="{% url "employees:create_schedule" %}" method="POST">
+	      		<span class="card-title"><h5>Nuevo horario para {{employee.userprofile.name}}</h5></span>
+				{% csrf_token %}
+				{% if messages %}
+					<ul class="messages">
+						{% for message in messages %}
+						<li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }} </li>
+						{% endfor %}
+					</ul>
+				{% endif%}
+				<div class="input-field col s12 l6">
+					<select name="day" required>
+					  <option value="" disabled selected>Día de la semana</option>
+							<option value="lunes">Lunes</option>
+							<option value="martes">Martes</option>
+							<option value="miercoles">Miércoles</option>
+							<option value="jueves">Jueves</option>
+							<option value="viernes">Viernes</option>
+							<option value="sabado">Sábado</option>
+							<option value="domingo">Domingo</option>
+					</select>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="time" name="entryTime" id="entryTime" class="validate" required="true"/>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="time" name="departureTime" id="departureTime" class="validate" required="true"/>
+				</div>
+
+				<div class="row center-align clear-both">
+					<div class="col s12 m6 l6">
+						<a href="{% url "employees:schedule_employee" pk=employee.id %}" class="btn red waves-effect waves-light">Atrás</a>
+					</div>
+					<div class="col s12 m6 l6">
+						<button type="submit" class="btn waves-effect waves-light btn-signup">CREAR HORARIO</button>
+					</div>
+				</div>
+				</form>
+		    </div>
+		</div>
+	</div>	
+</div>	
+</article>
+{% endblock  %}
+{% block js %}
+<script>
+$('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+</script>
+{% endblock  %}

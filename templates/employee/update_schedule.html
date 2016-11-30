@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Editar horario
+{% endblock  %}
+
+{% block content %}
+<article class="page-content">
+<div class="row">	
+	<div id="create_employee" class="col l6 push-l3  " >
+		<div class="card ">
+		    <div class="card-content  ">
+				<form action="{% url "employees:update_schedule" %}" method="POST">
+	      		<span class="card-title"><h5>Editar horario de {{employee.userprofile.name}} {{employee.userprofile.lastname}}</h5></span>
+				{% csrf_token %}
+				{% if messages %}
+					<ul class="messages">
+						{% for message in messages %}
+						<li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }} </li>
+						{% endfor %}
+					</ul>
+				{% endif%}
+				<div class="input-field col s12 l6">
+					<select name="day" required value="{{schedule.day}}">
+					  <option value="" disabled>Día de la semana</option>
+							<option value="lunes"
+								{% if schedule.day == "lunes" %}selected="selected"{% endif %}>
+       							Lunes
+       						</option>
+							<option value="martes"
+								{% if schedule.day == "martes" %}selected="selected"{% endif %}>
+       							Martes
+       						</option>
+       						<option value="miercoles"
+								{% if schedule.day == "miercoles" %}selected="selected"{% endif %}>
+       							Miércoles
+       						</option>
+       						<option value="jueves"
+								{% if schedule.day == "jueves" %}selected="selected"{% endif %}>
+       							Jueves
+       						</option>
+       						<option value="viernes"
+								{% if schedule.day == "viernes" %}selected="selected"{% endif %}>
+       							Viernes
+       						</option>
+       						<option value="sabado"
+								{% if schedule.day == "sabado" %}selected="selected"{% endif %}>
+       							Sábado
+       						</option>
+       						<option value="domingo"
+								{% if schedule.day == "domingo" %}selected="selected"{% endif %}>
+       							Domingo
+       						</option>
+					</select>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="time" name="entryTime" id="entryTime" class="validate" required="true" value="{{schedule.entryTime}}" />
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="time" name="departureTime" id="departureTime" class="validate" required="true" value="{{schedule.departureTime}}" />
+				</div>
+
+				<div class="row center-align clear-both">
+					<div class="col s12 m6 l6">
+						<a href="{% url "employees:schedule_employee" pk=employee.id %}" class="btn red waves-effect waves-light">Atrás</a>
+					</div>
+					<div class="col s12 m6 l6">
+						<button type="submit" class="btn waves-effect waves-light btn-signup">EDITAR HORARIO</button>
+					</div>
+				</div>
+				</form>
+		    </div>
+		</div>
+	</div>	
+</div>	
+</article>
+{% endblock  %}
+{% block js %}
+<script>
+$('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+</script>
+{% endblock  %}

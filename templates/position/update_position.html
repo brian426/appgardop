@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Cargo
+{% endblock  %}
+
+{% block content %}
+<article class="page-content">
+<div class="row">	
+	<div id="update_employee" class="col l6 push-l3  " >
+		<div class="card ">
+		    <div class="card-content  ">
+	      		<span class="card-title"><h5>Modificar cargo</h5></span>
+				<form action="{% url "positions:update_position" %}" method="post">
+				{% csrf_token %}
+				<div class="input-field col s12 l6">
+					<input type="text" name="code" id="code" class="validate" value="{{position.code}}" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="code">Código de cargo</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="nameposition" id="nameposition" class="validate" value="{{position.nameposition}}" required="true" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="nameposition">Nombre de cargo</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<input type="text" name="description" id="description" class="validate" value="{{position.description}}" required="true" onkeypress="return validateString(event)" maxlength="50"></input>
+		          	<label for="description">Descripción</label>
+				</div>
+				<div class="input-field col s12 l6">
+					<select name="state" required="true">
+					  <option value="" disabled selected>Estado</option>
+							{% if position.state == "ENA"%}
+							<option value="ENA" selected="">Activo</option>
+							<option value="DIS">Inactivo</option>
+							{% endif %}	
+							{% if position.state == "DIS"%}
+							<option value="ENA" ="">Activo</option>
+							<option value="DIS" selected>Inactivo</option>
+							{% endif %}	
+					</select>
+				</div>
+				<div class="input-field col s12 l6">
+					<select name="contract" required="true">
+					  	<option value="" disabled>Contrato</option>
+					  	{% for c in contracts %}
+							<option value="{{c.id}}"
+								{% if c == contract %}selected="selected"{% endif %}>
+       							{{c.namecontract}}
+       						</option>
+						{% empty %}
+						{% endfor %}
+					</select>
+					</div>
+				<div class="row center-align clear-both">
+					<div class="col s12 m6 l6">
+						<a href="{% url "positions:getall" %}" class="btn red waves-effect waves-light">Atrás</a>
+					</div>
+					<div class="col s12 m6 l6">
+						<button type="submit" class="btn waves-effect waves-light btn-signup" >GUARDAR CAMBIOS</button>
+					</div>
+				</div>
+				</form>
+		    </div>
+		</div>
+	</div>	
+</div>	
+</article>
+{% endblock  %}

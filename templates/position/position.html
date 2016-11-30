@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Cargos 
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col s12 l6">
+		<h4>Cargos</h4>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col s12 l6 input-field">
+		<i class="material-icons prefix">search</i>
+		<input type="text" name="search" id="search" class="validate"></input>
+      	<label for="seach">Buscar</label>
+	</div>
+	<div class="col s12 l3 push-l3">
+		<a href="{% url "positions:create_position_form" %}" class="btn waves-effect waves-light right">Añadir cargo</a>
+	</div>
+</div>
+
+<div class="row ">
+	<div class="col m12">
+		<table id="positionTable" class="display table bordered" cellspacing="0" width="100%">
+	        <thead>
+	            <tr>
+	            	<th>Código</th>
+	                <th>Nombre del Cargo</th>
+	                <th>Descripción</th>
+	                <th>Tipo de Contrato</th>
+	                <th>Estado</th>
+	                <th>Acciones</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        {% for e in positions %}
+	            <tr class="data">
+	            	<td>{{e.code}}</td>
+	                <td>{{e.nameposition}}</td>
+	                <td>{{e.description}}</td>
+	                <td>{{e.contract.namecontract}}</td>
+	                {% if e.state == 'ENA' %}
+					<td class="green-text text-accent-3">ACTIVO</td>
+					{% elif e.state == 'DIS' %}
+					<td class="red-text text-darken-1">INACTIVO</td>
+					{% endif %}
+	                <td>
+	                <a href="{% url "positions:update_position_form" pk=e.id %}" class="btn-floating waves-effect waves-light"><i class="material-icons left">mode_edit</i></a>
+	                <a href="{% url "positions:delete_position" pk=e.id %}" id="btnDelete" class="btn-floating waves-effect waves-light"><i class="material-icons left">delete</i></a></td>
+	            </tr>
+	        {% empty %}
+	        	No hay registro de cargos    
+			{% endfor %}	            
+	        </tbody>
+	    </table>
+	</div>
+</div>
+{% endblock  %}
+{% block js %}
+<script>
+var $rows = $('#positionTable tr.data');
+$('#search').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
+{% endblock  %}

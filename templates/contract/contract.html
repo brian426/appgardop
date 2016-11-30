@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Contratos 
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col s12 l6">
+		<h4>Contratos</h4>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col s12 l6 input-field">
+		<i class="material-icons prefix">search</i>
+		<input type="text" name="search" id="search" class="validate"></input>
+      	<label for="seach">Buscar</label>
+	</div>
+	<div class="col s12 l3 push-l3 ">
+		<a href="{% url "contracts:create_contract" %}" class="btn waves-effect waves-light right">Añadir contrato</a>
+	</div>
+</div>
+
+<div class="row ">
+	<div class="col m12">
+		<table id="contractTable" class="display table bordered" cellspacing="0" width="100%">
+	        <thead>
+	            <tr>
+	                <th>Contrato</th>
+	                <th>Descripción</th>
+	                <th>Estado</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        {% for e in contracts %}
+	            <tr class="data">
+	                <td>{{e.namecontract}}</td>
+	                <td>{{e.description}}</td>
+	                {% if e.state == 'ENA' %}
+					<td class="green-text text-accent-3">ACTIVO</td>
+					{% elif e.state == 'DIS' %}
+					<td class="red-text text-darken-1">INACTIVO</td>
+					{% endif %}
+	                <td>
+	                <a href="{% url "contracts:update_contract_form" pk=e.id %}" class="btn-floating waves-effect waves-light"><i class="material-icons left">mode_edit</i></a>
+	                <a href="{% url "contracts:delete_contract" pk=e.id %}" id="btnDelete" class="btn-floating waves-effect waves-light"><i class="material-icons left">delete</i></a></td>
+	            </tr>
+	        {% empty %}
+	        	No hay registro de contratos    
+			{% endfor %}	            
+	        </tbody>
+	    </table>
+	</div>
+</div>
+{% endblock  %}
+{% block js %}
+<script>
+var $rows = $('#contractTable tr.data');
+$('#search').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
+{% endblock  %}

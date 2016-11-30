@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Asistencia de empleados
+{% endblock  %}
+
+{% block content %}
+<article class="page-content">
+<div class="row">	
+	<div id="update_employee" class="col l6 push-l3  " >
+		<div class="card ">
+		    <div class="card-content  ">
+		    	<div class="row">
+					<div class="col s16 l4 input-field">
+						<input type="date" class="datepicker">
+				      	<label for="ini-date">Fecha inicio</label>
+					</div>
+					<div class="col s16 l4 input-field">
+						<input type="date" class="datepicker">
+				      	<label for="fin-date">Fecha fin</label>
+					</div>
+					<div class="col s12 l3 push-l1">
+						<a href="{% url "employees:create_employee_form" %}" class="btn waves-effect waves-light right">
+							Filtrar
+						</a>
+					</div>
+				</div>
+	      		<span class="card-title"><h5>Horario de {{employee.userprofile.name}}</h5></span>
+				{% csrf_token %}
+				<div class="row ">
+					<div class="col m12">
+						<table id="scheduleTable" class="display table bordered" cellspacing="0" width="100%">
+					        <thead>
+					            <tr>
+					            	<th>Día</th>
+					                <th>Hora de entrada</th>
+					                <th>Hora de salida</th>
+					                <th>Acciones</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					        {% for s in schedules %}
+					            <tr class="data">
+					            	<td>{{s.day}}</td>
+					                <td class="center-align">{{s.entryTime}}</td>
+					                <td class="center-align">{{s.departureTime}}</td>
+					                <td>
+					                <a href="#" class="btn-floating waves-effect waves-light"><i class="material-icons left">mode_edit</i></a>
+					                <a href="#" id="btnDelete" class="btn-floating waves-effect waves-light"><i class="material-icons left">delete</i></a></td>
+					            </tr>
+					        {% empty %}
+					        	No hay registro de horarios    
+							{% endfor %}	            
+					        </tbody>
+					    </table>
+					</div>
+				</div>
+				<div class="row center-align clear-both">
+					<div class="col s12 m6 l6">
+						<a href="{% url "employees:search_schedule" %}" class="btn red waves-effect waves-light">Atrás</a>
+					</div>
+					<div class="col s12 m6 l6">
+						<a href="{% url "employees:create_schedule_form" pk=employee.id %}" class="btn waves-effect waves-light btn-signup">AÑADIR HORARIO</a>
+					</div>
+				</div>
+		    </div>
+		</div>
+	</div>	
+</div>	
+</article>
+{% endblock  %}
+{% block js %}
+<script>
+$('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+</script>
+{% endblock  %}

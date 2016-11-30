@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C.
+{% endblock  %}
+
+{% block content %}
+<br><br>
+<article class="page-content">
+<div class="row">
+	<div id="signin" class="col s12 l4 push-l4 ">
+		<div class="card ">
+		    <div class="card-content">
+		    	<div class="card-panel light-blue center-align">
+		    		<span class="white-text date-assistance" id="date"></span>
+		    	</div>
+		    	<div class="center-align">
+		    		<span class="hour-assistance" id="hour"></span>
+		    	</div>
+			    <div class="center-align">
+			    	{% load static %}
+			    	<img class="img-profile-default" src="{% static "img/photo_profile.jpg" %}" alt="" >
+			    </div>
+				<form action="{% url "assistances:validate_code_employee" %}" method="POST">
+					{% csrf_token %}
+					{% if request.session.actionMsg|length > 0 %}
+						{% if request.session.finded == 1 %}
+							<div class="row center-align">
+					          	<h5 class="success">{{request.session.actionMsg}}</h5>
+							</div>
+						{% endif %}
+						{% if request.session.finded == 2 %}
+							<div class="row center-align">
+					          	<h5 class="error">{{request.session.actionMsg}}</h5>
+							</div>
+						{% endif %}
+					{% endif %}
+					<div class="input-field col s12 l12">
+						<i class="material-icons prefix">account_circle</i>
+						<input type="text" name="code" id="code" class="validate" required="true"></input>
+			          	<label for="code">Código de trabajador</label>
+					</div>
+					<div class="row center-align">
+						<div class="col l12 s12">
+							<button type="submit" class="btn waves-effect waves-light blue accent-1">REGISTRAR</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+</div>
+{% endblock  %}
+{% block js %}
+<script type="text/javascript">
+	window.onload = startTime();
+</script>
+</article>
+{% endblock  %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block page_title %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/materialize.css' %}">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+</head>
+<body>
+<!-- Dropdown Structure begin-->
+<ul id='dropdown_user' class="dropdown-content">
+	<li><a href="{% url "employees:logout" %}" class ="a-contrast">Salir</a></li>
+</ul>
+<!-- Dropdown Structure Ajustes-->
+<ul id='dropdown_settings' class="dropdown-content">
+	<li><a href="#" class ="a-contrast">Perfiles</a></li>
+	<li><a href="#" class ="a-contrast">Roles</a></li>
+	<li class="divider"></li>
+    <li><a href="#!">Cambiar contraseña</a></li>
+</ul>
+<!-- Dropdown Structure end-->
+	<nav class="light-blue accent-4">
+		<div class="row">
+		    <div class="nav-wrapper">
+		    	<div class="col s12">
+			      	<a href="/" class="brand-logo">Gardop S.A.C.</a>
+			      	<ul id="nav-mobile" class="right hide-on-med-and-down">
+			      		{% if user.is_admin %}
+			      		<li>
+			      			<a class="a-contrast" href="{% url "employees:getall" %}">
+			      				<i class="material-icons left">perm_identity</i>
+			      				Empleados
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="a-contrast" href="{% url "assistances:search_assistances" %}">
+			      				<i class=" material-icons left">spellcheck</i>
+			      				Asistencias
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="a-contrast" href="{% url "employees:search_schedule" %}">
+			      				<i class="material-icons left">today</i>
+			      				Horarios
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="a-contrast" href="{% url "positions:getall" %}">
+			      				<i class="material-icons left">picture_in_picture</i>
+			      				Cargos
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="a-contrast" href="{% url "contracts:getall" %}">
+				      			<i class="material-icons left">work</i>
+				      			Contratos
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="a-contrast" href="#">
+			      				<i class=" material-icons left">library_books</i>
+			      				Reportes
+			      			</a>
+			      		</li>
+			      		<li>
+			      			<a class="dropdown-button" href="#" data-activates="dropdown_settings">
+			      				<i class=" material-icons left">settings</i>
+			      				Ajustes
+			      			</a>
+			      		</li>
+			      		{% endif %}
+			      		{% if user.is_authenticated %}
+			        	<li><a class="dropdown-button" href="#" data-activates="dropdown_user">{{ user.name }} {{ user.lastname }}</a></li>
+						{% else %}
+						<a class="a-contrast" href="{% url "assistances:redirect_assistance_taking" %}">Tomar asistencia</a>
+						<a class="a-contrast" href="{% url "employees:signin" %}">Iniciar Sesión</a>
+						{% endif %}
+			      	</ul>
+		    	</div>
+		    </div>
+		</div>
+	</nav>
+
+	<section class="body-container">
+	{% block content %}
+	{% endblock %}
+	</section>
+</body>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/materialize.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+{% block js %}
+{% endblock %}   
+</html>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Imprenta Gardop S.A.C. - Consulta asistencia de empleados 
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col s12 l6">
+		<h4>Consulta asistencia de empleados</h4>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col s12 l6 input-field">
+		<i class="material-icons prefix">search</i>
+		<input type="text" name="search" id="search" class="validate"></input>
+      	<label for="seach">Buscar</label>
+	</div>
+</div>
+
+<div class="row ">
+	<div class="col m12">
+		<table id="employeeTableS" class="display table bordered" cellspacing="0" width="100%">
+	        <thead>
+	            <tr>
+	            	<th>Código</th>
+	                <th>Nombres</th>
+	                <th>Tipo de documento</th>
+	                <th>Numero de documento</th>
+	                <th>Cargo</th>
+	                <th>Estado</th>
+	                <th>Acciones</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        {% for e in employees %}
+	            <tr class="data">
+	            	<td>{{e.code}}</td>
+	                <td>{{e.userprofile.name}} {{e.userprofile.lastname}}</td>
+	                <td>{{e.userprofile.documentType}}</td>
+	                <td>{{e.userprofile.nroDocument}}</td>
+	                <td>{{e.position.code}} - {{e.position.nameposition}}</td>
+	                {% if e.userprofile.is_active %}
+					<td class="green-text text-accent-3">ACTIVO</td>
+					{% elif not e.userprofile.is_active %}
+					<td class="red-text text-darken-1">INACTIVO</td>
+					{% endif %}
+	                <td>
+	                <a href="{% url "assistances:employee_assistances" pk=e.id %}" class="btn-floating waves-effect waves-light"><i class="material-icons left">perm_contact_calendar</i></a>
+	                </td>
+	            </tr>
+	        {% empty %}
+	        	No hay registro de empleados    
+			{% endfor %}	            
+	        </tbody>
+	    </table>
+	</div>
+</div>
+{% endblock  %}
+{% block js %}
+<script>
+var $rows = $('#employeeTableS tr.data');
+$('#search').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
+{% endblock  %}
